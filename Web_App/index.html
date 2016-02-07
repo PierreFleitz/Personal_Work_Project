@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="utf-8" name="Kampus" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet"  href="http://demos.jquerymobile.com/1.4.5/css/themes/default/jquery.mobile-1.4.5.min.css"/>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="shortcut icon" href="http://demos.jquerymobile.com/1.4.5/favicon.ico">
+  <script  src="http://demos.jquerymobile.com/1.4.5/js/jquery.js"></script>
+  <script src="http://demos.jquerymobile.com/1.4.5/js/jquery.mobile-1.4.5.min.js"></script> 
+  	<script>
+		$( document ).on( "pagecreate", function() {
+			$( "body > [data-role='panel']" ).panel();
+			$( "body > [data-role='panel'] [data-role='listview']" ).listview();
+		});
+		$( document ).one( "pageshow", function() {
+			$( "body > [data-role='header']" ).toolbar();
+			$( "body > [data-role='header'] [data-role='navbar']" ).navbar();
+		});
+	</script>
+  <title>Kampus</title>
+</head>
+
+<body>
+  <!-- APP HEADER -->
+  <div data-role="header" id="appheader" data-position="fixed">
+	<h1>KAMPUS</h1>
+	<a href="#navpanel" data-icon="bars" data-iconpos="notext">Menu</a>
+  </div><!-- APP HEADER -->
+  
+  <!-- MEALS -->
+  <div data-role="page" id="meals">
+	<script>
+	var today = new Date();
+	var dd = "" + today.getDate();
+	if(dd.length < 2) {
+		dd = "0" + dd;
+	}
+	var mm = today.getMonth()+1; //January is 0!
+	var yyyy = today.getFullYear();
+	var todayStr = yyyy + "-" + mm + "-" + dd;
+	
+	//YQL stuff..
+	var BASE_URI = 'http://query.yahooapis.com/v1/public/yql?';  
+	// This utility function creates the query string
+	// to be appended to the base URI of the YQL Web
+	// service.
+	function toQueryString(obj) {
+	  var parts = [];    
+	  for(var each in obj) if (obj.hasOwnProperty(each)) {
+		parts.push(encodeURIComponent(each) + '=' + encodeURIComponent(obj[each]));    
+	  }    
+	  return parts.join('&');  
+	};
+	
+	//getting meal for Q restaurant
+	  var qmealsurl = "http://www.hors.se/veckans-meny/?week_for=" + todayStr + "&l=e#tillmenyn";
+	  
+	// Create a YQL query to get data for the meal
+	var yql_query = "SELECT * from html WHERE url='" + qmealsurl +"';"; //
+	var urlpost = BASE_URI + toQueryString({q: yql_query, format: 'xml',callback: 'parseQCallback'});
+	
+	// Using YQL and JSONP
+	$.ajax({
+		type:'GET',
+		url: urlpost,
+	});
+
+	function parseQCallback(data) {
+		console.log(urlpost);
+		var xmlString = data.results[0];
+		$('#text_area').val(xmlString);		
+		var meal = $.parseXML(xmlString);
+
+		var meal = $(xmlString).find("table")[0];
+		var qmeals = $('#qmeals');
+		for (var i = 0, row; row = meal.rows[i]; i++) {
+			//iterate through rows
+			//rows would be accessed using the "row" variable assigned in the for loop
+
+			if(i!=0){
+				for (var j = 0, col; col = row.cells[j]; j++) {
+					 //iterate through columns
+					 //columns would be accessed using the "col" variable assigned in the for loop
+					var rowDate = col.innerHTML;
+					if(j==0 && rowDate.indexOf(dd) < 0) {
+						break;
+					}else if(j!=0) {
+						qmeals.append("<li>" + col.innerHTML + "</li>");
+					}
+					
+				}
+			}	
+		}
+	}
+
+	
+	//OTHER Restaurant
+
+</script>
+
+    <div data-role="header">
+	  <h1>Meals on KTH Campus</h1>
+	</div><!-- /header -->
+	
+	<div role="main" class="ui-content">
+	  <ul id="restaurants" data-role="listview">
+	    <li>Q Restaurant
+		  <ul id="qmeals" >
+		  </ul>
+		</li>
+	  </ul>
+	</div><!-- /content -->
+	
+	<div data-role="footer">
+	  <p>Group 01 </p>
+	</div><!-- /footer -->
+  </div><!-- /page -->
+  
+    <!-- MAP -->
+  <div data-role="page" id="map">
+    <div data-role="header">
+	  <h1>Find on KTH Campus</h1>
+	</div><!-- /header -->
+	
+	<div role="main" class="ui-content">
+	<!-- SEARCH BAR -->
+      <form>
+         <input name="search_map" id="search_map" type="search" value="" placeholder="search">
+      </form><!-- /SEARCH BAR -->
+      <div id="googlemap"></div>
+		<script>
+          function initMap() {
+		  var mapDiv = document.getElementById('googlemap');
+		  var map = new google.maps.Map(mapDiv, {center : {lat: 59.348244, lng: 18.073277},zoom: 15});
+		  }
+		</script>
+	    <script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script>
+	</div><!-- /content -->
+	
+	<div data-role="footer">
+	  <p>Group 01 </p>
+	</div><!-- /footer -->
+  </div><!-- /page -->
+  
+  <!-- NAVIGATION PANEL -->
+  <div data-role="panel" id="navpanel" data-position="left" data-display="overlay" data-theme="a">
+    <ul data-role="listview">
+      <li data-icon="back"><a href="#" data-rel="close">Close</a></li>
+      <li><a href="#meals">Meal</a></li>
+      <li><a href="#map">Map</a></li>
+      <li>Book a room</li>
+	  <li>Dictionary</li>
+    </ul>
+  </div><!-- /navpanel -->
+</body>
+
+</html> 

@@ -22,9 +22,9 @@
     <link href="http://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
 	
-	<!-- Jquery parsing -->
-  <script  src="http://demos.jquerymobile.com/1.4.5/js/jquery.js"></script>
-  <script src="http://demos.jquerymobile.com/1.4.5/js/jquery.mobile-1.4.5.min.js"></script> 
+
+
+	
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -59,7 +59,7 @@
                         <a href="#page-top"></a>
                     </li>
                     <li>
-                        <a href="meal.html">Meal</a>
+                        <a href="food.html">Food</a>
                     </li>
                     <li>
                         <a href="map.html">Map</a>
@@ -98,8 +98,8 @@
     -->
     <hr size=1>
 	
-    <!-- About Section -->
-    <section class="container" id="about">
+    <!-- Search Section -->
+    <section class="container" id="searchSection">
         <div class="container">
                 <div class="col-lg-12 text-center">
                     <h2>Directory</h2>
@@ -108,78 +108,32 @@
                 </div>
         </div>
 
-		<!--
-		https://www.kth.se/search/search?entity=kth-profile&filterlabel=Employees&q=!!!!
-		-->
+
 		<div class="col-lg-12 text-center">
-		<form class="form search kth" id="search-UASlq-searchForm" method="GET" action="https://www.kth.se/search/search">
-			<fieldset class="boxSearch" id="search-UASlq-searchFieldset">    
-				<input class="filterParameter" id="search-UASlq-entity" name="entity" value="kth-profile" type="hidden">    
-				<input class="filterParameter" name="filterlabel" value="Employees" type="hidden"> 
-				<div class="q_field">
-					<div class="input">
-						<input id="search-UASlq-q" autocomplete="off" class="q ui-autocomplete-input" accesskey="s" size="26" maxlength="2048" name="q" placeholder="Name, title, phone, et c.." type="text">
+			<div class="form search kth" id="kth-searchForm" >
+				<fieldset class="boxSearch" id="kth-searchFieldset">   
+					<div class="q_field">
+						<div class="input">
+							<input id="kth-q" autocomplete="off" class="q ui-autocomplete-input" accesskey="s" size="26" maxlength="2048" name="q" placeholder="Name, title, phone, etc.." type="text">
+						</div>
 					</div>
-				</div>
-				<button  value="Reset" type="reset" id="search-UASlq-clearButton">Clear</button> 
-				<button value="Search" class="button search" type="submit">Search</button>
-		
-			</fieldset> 
-		</form>
-		
-	   <script type="text/javascript">
-		$(document).ready(function(){
-		if ($("#search-UASlq-q").val() != "") {
-		$("#search-UASlq-clearButton").addClass("visible");
-		$("#search-UASlq-clearButton").disabled=false;
-		$("#search-UASlq-searchFieldset").addClass("hasText");
-		}		
-		$("#search-UASlq-clearButton").click(function(e){
-		$("#search-UASlq-q").val("");
-		$(this).removeClass("visible");
-		$('#search-UASlq-searchFieldset').removeClass('hasText');
-		e.preventDefault();
-		$('#search-UASlq-q').focus();
-		});
-		$("#search-UASlq-q").on("keyup", function(e) {
-		if ($("#search-UASlq-q").val() != "") {
-		$("#search-UASlq-clearButton").addClass("visible");
-		$("#search-UASlq-searchFieldset").addClass("hasText");
-		} else {
-		$("#search-UASlq-clearButton").removeClass("visible");
-		}
-		});
-		});
-		</script>   
-		<script type="text/javascript" src="//www.kth.se/search/search/v/0.3/searchboxautocomplete.js"></script>
-		<script type="text/javascript">
-		if ($.fn.searchboxautocomplete) {
-		$('#search-UASlq-q').searchboxautocomplete({ searchFormId: "#search-UASlq-searchForm", searchInputId : "#search-UASlq-q", entities: "kth-profile ", formsetId : "#search-UASlq-searchFieldset" });
-		}
-		</script> 
-
-		<script type="text/javascript" src="http://www.kth.se/api/places/v2/places">
-		$(document).ready(function(){
-		var urlk = "http://www.kth.se/api/places/v2/places";
-		console.log(urlk);
-		$.ajax({
-			 url:urlk,
-			 dataType: 'jsonp',
-			 type: 'GET',
-			 success:function(json){
-				 console.log(json[0]);
-				 alert("Success");
-			 },
-			error: function (jqXHR, textStatus, errorThrown) {
-				console.log(textStatus + ': ' + errorThrown);
-        },     
-		});
-		});			
-		</script>		
-
-		
+					<button  value="Reset" type="reset" id="kth-clearButton">Clear</button> 
+					<button value="Search" class="button search" id="kth-searchButton" type="button">Search</button>
+				</fieldset>
+			</div> 
 		</div>
-    </section>
+		<br><br>
+	
+		<div class="col-lg-12 text-center" id="nbOfRes">
+		</div> 
+		<br>
+		<div class="container" id="resultatsArea">
+		</div>
+		
+		<div class="container" id="moreResults">
+		</div>
+	</section>
+	
 
     <!-- Footer -->
     <footer class="text-center">
@@ -250,6 +204,21 @@
 
     <!-- Custom Theme JavaScript -->
     <script src="js/freelancer.js"></script>
+	
+		<!-- Ajax Page Loader -->
+	<script src="js/ajaxpageloader.js"></script>
+
+	<!-- Script Managing the research -->
+	<script src="js/directoryResearch.js"></script>
+	<script src="js/researchEmployee.js"></script>
+	
+	<script type="text/javascript" src="js/searchboxautocomplete.js"></script>
+	<script type="text/javascript">
+	if ($.fn.searchboxautocomplete) {
+	$('#kth-q').searchboxautocomplete({ searchFormId: "#kth-searchForm", searchInputId : "#kth-q", entities: "kth-profile ", formsetId : "#kth-searchFieldset" });
+	}
+	</script>
+		
 
 </body>
 
