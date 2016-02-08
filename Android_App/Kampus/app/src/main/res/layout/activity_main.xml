@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/grid_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3">
+
+
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/menu_button"
+            android:text="@string/menus"
+            android:layout_weight="1"
+            android:onClick="menuClick"/>
+
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/map_button"
+            android:text="@string/map"
+            android:onClick="mapClick"/>
+
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/news_button"
+            android:text="@string/News"
+            android:onClick="newsClick"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="3">
+
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/directory_button"
+            android:text="@string/directory"
+            android:layout_weight="1"
+            android:onClick="directoryClick"/>
+
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/booking_button"
+            android:text="@string/book_room"
+            android:layout_weight="1"
+            android:onClick="roomBookClick"/>
+
+        <Button
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:id="@+id/about_us_button"
+            android:text="@string/about_us"
+            android:layout_weight="1"
+            android:onClick="aboutClick"/>
+    </LinearLayout>
+
+
+</LinearLayout>
